@@ -2,6 +2,12 @@
 
 Okul öncesi eğitim kurumları için geliştirilmiş tam özellikli SaaS yönetim platformu.
 
+> **🚀 Hemen başlamak için:** [QUICKSTART.md](./QUICKSTART.md) dosyasına bakın!
+>
+> **📖 Detaylı rehberler:**
+> - [Firebase Kurulumu](./FIREBASE_SETUP.md) - Adım adım Firebase yapılandırma
+> - [DNS Ayarları](./DNS_SETUP.md) - Custom domain (tadpop.site) kurulumu
+
 ## ✨ Özellikler
 
 - ✅ Çok kurumlu yapı (bir hesapta birden fazla okul yönetimi)
