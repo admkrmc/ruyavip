@@ -24,7 +24,7 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/ruyavip">
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
