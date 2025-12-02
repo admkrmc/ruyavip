@@ -5,12 +5,12 @@ import { getStorage } from 'firebase/storage';
 
 // Firebase yapılandırması
 const firebaseConfig = {
-  apiKey: "AIzaSyBVEt-kHSj0ao43yZBZGzHdxBFk7cdl5cU",
+  apiKey: "AIzaSyDVj4p1PuGWyGzRwKYDTFTc7nWND4GJhyk",
   authDomain: "ruyavip-production.firebaseapp.com",
   projectId: "ruyavip-production",
   storageBucket: "ruyavip-production.firebasestorage.app",
-  messagingSenderId: "1069267301859",
-  appId: "1:1069267301859:web:00fac72e05e4bec6d5dbe9"
+  messagingSenderId: "582927040920",
+  appId: "1:582927040920:web:9678ca4d845175c6d9ebed"
 };
 
 // Firebase başlat
