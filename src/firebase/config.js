@@ -3,14 +3,14 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Firebase yapılandırması - Firebase Console'dan alınacak
+// Firebase yapılandırması
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: "AIzaSyBVEt-kHSj0ao43yZBZGzHdxBFk7cdl5cU",
+  authDomain: "ruyavip-production.firebaseapp.com",
+  projectId: "ruyavip-production",
+  storageBucket: "ruyavip-production.firebasestorage.app",
+  messagingSenderId: "1069267301859",
+  appId: "1:1069267301859:web:00fac72e05e4bec6d5dbe9"
 };
 
 // Firebase başlat
