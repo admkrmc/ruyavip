@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "ruyavip-production",
   storageBucket: "ruyavip-production.firebasestorage.app",
   messagingSenderId: "582927040920",
-  appId: "1:582927040920:web:9678ca4d845175c6d9ebed"
+  appId: "1:582927040920:web:71daf936c972e667d9ebed"
 };
 
 // Firebase başlat
