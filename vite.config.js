@@ -13,7 +13,7 @@ export default defineConfig({
       }
     }
   ],
-  base: '/', // Root deployment
+  base: '/ruyavip/', // GitHub Pages subdirectory
   build: {
     outDir: 'dist',
     sourcemap: false,
