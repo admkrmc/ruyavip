@@ -13,7 +13,7 @@ export default defineConfig({
       }
     }
   ],
-  base: '/', // Vercel root deployment
+  base: '/', // Vercel root deployment - force rebuild
   build: {
     outDir: 'dist',
     sourcemap: false,
