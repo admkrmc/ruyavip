@@ -3,14 +3,14 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Firebase yapılandırması
+// Firebase yapılandırması (ruyavip-free project)
 const firebaseConfig = {
-  apiKey: "AIzaSyDVj4p1PuGWyGzRwKYDTFTc7nWND4GJhyk",
-  authDomain: "ruyavip-production.firebaseapp.com",
-  projectId: "ruyavip-production",
-  storageBucket: "ruyavip-production.firebasestorage.app",
-  messagingSenderId: "582927040920",
-  appId: "1:582927040920:web:71daf936c972e667d9ebed"
+  apiKey: "AIzaSyBF1B41pC47dVHXEahC4yndzKqMGMm9ygQ",
+  authDomain: "ruyavip-free.firebaseapp.com",
+  projectId: "ruyavip-free",
+  storageBucket: "ruyavip-free.firebasestorage.app",
+  messagingSenderId: "44458847938",
+  appId: "1:44458847938:web:4637b7092ebceb6c1cd55b"
 };
 
 // Firebase başlat
