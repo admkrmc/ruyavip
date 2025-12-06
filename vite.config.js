@@ -13,7 +13,7 @@ export default defineConfig({
       }
     }
   ],
-  base: '/ruyavip/', // GitHub Pages subdirectory
+  base: '/', // Vercel root deployment
   build: {
     outDir: 'dist',
     sourcemap: false,
