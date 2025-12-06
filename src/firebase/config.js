@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Firebase yapılandırması (ruyavip-free project)
+// Firebase yapılandırması (ruyavip-free project - Updated)
 const firebaseConfig = {
   apiKey: "AIzaSyBF1B41pC47dVHXEahC4yndzKqMGMm9ygQ",
   authDomain: "ruyavip-free.firebaseapp.com",
