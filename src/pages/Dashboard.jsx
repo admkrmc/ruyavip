@@ -18,7 +18,8 @@ import {
   User,
   LogOut,
   Users,
-  Building2
+  Building2,
+  GraduationCap
 } from 'lucide-react';
 
 // Bileşen importları
@@ -27,6 +28,7 @@ import Announcements from '../components/Announcements';
 import Payments from '../components/Payments';
 import Messages from '../components/Messages';
 import FoodMenu from '../components/FoodMenu';
+import StudentManagement from '../components/StudentManagement';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -40,7 +42,9 @@ const Dashboard = () => {
   const [switchTarget, setSwitchTarget] = useState(null);
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Gösterge Paneli', icon: LayoutDashboard },
+    { id: 'students', label: 'Öğrenci Yönetimi', icon: GraduationCap },
+    { id: 'parents', label: 'Veli Yönetimi', icon: Users },
     { id: 'announcements', label: 'Duyurular', icon: Bell },
     { id: 'payments', label: 'Ödeme Takip', icon: CreditCard },
     { id: 'messages', label: 'Mesajlar', icon: MessageSquare, badge: 5 },
@@ -70,6 +74,8 @@ const Dashboard = () => {
     switch (activeMenu) {
       case 'dashboard':
         return <DashboardHome />;
+      case 'students':
+        return <StudentManagement />;
       case 'announcements':
         return <Announcements />;
       case 'payments':
