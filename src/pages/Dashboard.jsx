@@ -34,6 +34,7 @@ import PaymentManagement from '../components/PaymentManagement';
 import MessagingSystem from '../components/MessagingSystem';
 import Gallery from '../components/Gallery';
 import AttendanceManagement from '../components/AttendanceManagement';
+import ApprovalSystem from '../components/ApprovalSystem';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -91,6 +92,8 @@ const Dashboard = () => {
         return <MessagingSystem />;
       case 'gallery':
         return <Gallery />;
+      case 'approvals':
+        return <ApprovalSystem />;
       case 'absence':
         return <AttendanceManagement />;
       case 'food-menu':
