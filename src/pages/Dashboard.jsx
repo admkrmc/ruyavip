@@ -31,6 +31,7 @@ import FoodMenu from '../components/FoodMenu';
 import StudentManagement from '../components/StudentManagement';
 import ParentManagement from '../components/ParentManagement';
 import PaymentManagement from '../components/PaymentManagement';
+import MessagingSystem from '../components/MessagingSystem';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -85,7 +86,7 @@ const Dashboard = () => {
       case 'payments':
         return <PaymentManagement />;
       case 'messages':
-        return <Messages />;
+        return <MessagingSystem />;
       case 'food-menu':
         return <FoodMenu />;
       default:
