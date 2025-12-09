@@ -36,6 +36,7 @@ import Gallery from '../components/Gallery';
 import AttendanceManagement from '../components/AttendanceManagement';
 import ApprovalSystem from '../components/ApprovalSystem';
 import DailyReports from '../components/DailyReports';
+import MedicineTracking from '../components/MedicineTracking';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -101,6 +102,8 @@ const Dashboard = () => {
         return <FoodMenu />;
       case 'student-report':
         return <DailyReports />;
+      case 'medicine':
+        return <MedicineTracking />;
       default:
         return <ComingSoon title={menuItems.find(m => m.id === activeMenu)?.label} />;
     }
