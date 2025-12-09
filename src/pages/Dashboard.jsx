@@ -37,6 +37,7 @@ import AttendanceManagement from '../components/AttendanceManagement';
 import ApprovalSystem from '../components/ApprovalSystem';
 import DailyReports from '../components/DailyReports';
 import MedicineTracking from '../components/MedicineTracking';
+import ShuttleTracking from '../components/ShuttleTracking';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -104,6 +105,8 @@ const Dashboard = () => {
         return <DailyReports />;
       case 'medicine':
         return <MedicineTracking />;
+      case 'shuttle':
+        return <ShuttleTracking />;
       default:
         return <ComingSoon title={menuItems.find(m => m.id === activeMenu)?.label} />;
     }
