@@ -35,6 +35,7 @@ import MessagingSystem from '../components/MessagingSystem';
 import Gallery from '../components/Gallery';
 import AttendanceManagement from '../components/AttendanceManagement';
 import ApprovalSystem from '../components/ApprovalSystem';
+import DailyReports from '../components/DailyReports';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -98,6 +99,8 @@ const Dashboard = () => {
         return <AttendanceManagement />;
       case 'food-menu':
         return <FoodMenu />;
+      case 'student-report':
+        return <DailyReports />;
       default:
         return <ComingSoon title={menuItems.find(m => m.id === activeMenu)?.label} />;
     }
