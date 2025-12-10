@@ -19,7 +19,8 @@ import {
   LogOut,
   Users,
   Building2,
-  GraduationCap
+  GraduationCap,
+  UserCog
 } from 'lucide-react';
 
 // Bileşen importları
@@ -38,6 +39,7 @@ import ApprovalSystem from '../components/ApprovalSystem';
 import DailyReports from '../components/DailyReports';
 import MedicineTracking from '../components/MedicineTracking';
 import ShuttleTracking from '../components/ShuttleTracking';
+import StaffManagement from '../components/StaffManagement';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -54,6 +56,7 @@ const Dashboard = () => {
     { id: 'dashboard', label: 'Gösterge Paneli', icon: LayoutDashboard },
     { id: 'students', label: 'Öğrenci Yönetimi', icon: GraduationCap },
     { id: 'parents', label: 'Veli Yönetimi', icon: Users },
+    { id: 'staff', label: 'Personel Yönetimi', icon: UserCog },
     { id: 'announcements', label: 'Duyurular', icon: Bell },
     { id: 'payments', label: 'Ödeme Takip', icon: CreditCard },
     { id: 'messages', label: 'Mesajlar', icon: MessageSquare, badge: 5 },
@@ -87,6 +90,8 @@ const Dashboard = () => {
         return <StudentManagement />;
       case 'parents':
         return <ParentManagement />;
+      case 'staff':
+        return <StaffManagement />;
       case 'announcements':
         return <Announcements />;
       case 'payments':
