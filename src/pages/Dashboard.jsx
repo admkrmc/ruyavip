@@ -20,7 +20,8 @@ import {
   Users,
   Building2,
   GraduationCap,
-  UserCog
+  UserCog,
+  BarChart3
 } from 'lucide-react';
 
 // Bileşen importları
@@ -41,6 +42,7 @@ import MedicineTracking from '../components/MedicineTracking';
 import ShuttleTracking from '../components/ShuttleTracking';
 import StaffManagement from '../components/StaffManagement';
 import Newsletter from '../components/Newsletter';
+import Analytics from '../components/Analytics';
 import ComingSoon from '../components/ComingSoon';
 import ProfileMenu from '../components/ProfileMenu';
 import PasswordModal from '../components/PasswordModal';
@@ -69,7 +71,7 @@ const Dashboard = () => {
     { id: 'absence', label: 'Devamsızlık', icon: UserX },
     { id: 'shuttle', label: 'Okul Servisi', icon: Bus },
     { id: 'newsletter', label: 'Veli Bülteni', icon: Newspaper },
-    { id: 'daily-evaluation', label: 'Günlük Değerlendirme', icon: ClipboardCheck }
+    { id: 'analytics', label: 'Analytics & AI', icon: BarChart3 }
   ];
 
   const handleMenuClick = (menuId) => {
@@ -115,6 +117,8 @@ const Dashboard = () => {
         return <ShuttleTracking />;
       case 'newsletter':
         return <Newsletter />;
+      case 'analytics':
+        return <Analytics />;
       default:
         return <ComingSoon title={menuItems.find(m => m.id === activeMenu)?.label} />;
     }
