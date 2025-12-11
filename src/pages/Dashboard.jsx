@@ -27,8 +27,6 @@ import {
 // Bileşen importları
 import DashboardHome from '../components/DashboardHome';
 import Announcements from '../components/Announcements';
-import Payments from '../components/Payments';
-import Messages from '../components/Messages';
 import FoodMenu from '../components/FoodMenu';
 import StudentManagement from '../components/StudentManagement';
 import ParentManagement from '../components/ParentManagement';

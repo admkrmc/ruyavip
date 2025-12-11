@@ -21,7 +21,7 @@ const Login = () => {
       navigate('/dashboard');
     } catch (err) {
       setError('Giriş başarısız. Email veya şifre yanlış.');
-      console.error(err);
+      // Production: Error tracking service can be added here (Sentry, LogRocket, etc.)
     } finally {
       setLoading(false);
     }

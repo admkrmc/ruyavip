@@ -33,7 +33,7 @@ const Payments = () => {
 
       setPayments(data);
     } catch (error) {
-      console.error('Ödemeler yüklenirken hata:', error);
+      // Production: Error tracking service can be added here
     } finally {
       setLoading(false);
     }
