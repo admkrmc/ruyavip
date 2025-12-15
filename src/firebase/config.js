@@ -3,14 +3,15 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// Firebase yapılandırması (ruyavip-free project - Updated)
+// Firebase yapılandırması (ruyavip-free project)
+// Credentials loaded from environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBF1B41pC47dVHXEahC4yndzKqMGMm9ygQ",
-  authDomain: "ruyavip-free.firebaseapp.com",
-  projectId: "ruyavip-free",
-  storageBucket: "ruyavip-free.firebasestorage.app",
-  messagingSenderId: "44458847938",
-  appId: "1:44458847938:web:4637b7092ebceb6c1cd55b"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Firebase başlat

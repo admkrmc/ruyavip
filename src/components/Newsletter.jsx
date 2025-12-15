@@ -20,7 +20,7 @@ import {
 import { Card, StatCard } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
-import Modal from './ui/Modal';
+import { Modal } from './ui/Modal';
 
 const Newsletter = () => {
   const [showModal, setShowModal] = useState(false);
