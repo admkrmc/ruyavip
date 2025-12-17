@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const PaymentManagement = () => {
   const [payments, setPayments] = useState([
@@ -71,6 +72,9 @@ const PaymentManagement = () => {
     period: '',
     notes: ''
   });
+  const [reminderModal, setReminderModal] = useState({ show: false, parentName: '' });
+  const [deletePaymentModal, setDeletePaymentModal] = useState({ show: false, paymentId: null, invoiceNo: '' });
+  const [downloadModal, setDownloadModal] = useState({ show: false, invoiceNo: '' });
 
   const paymentMethods = [
     { value: 'nakit', label: 'Nakit' },
@@ -189,14 +193,17 @@ const PaymentManagement = () => {
   };
 
   const handleSendReminderConfirm = () => {
-    alert(`${selectedPayment.parentName} velisine ödeme hatırlatma SMS/Email gönderildi.`);
+    setReminderModal({ show: true, parentName: selectedPayment.parentName });
     setShowReminderModal(false);
   };
 
-  const handleDeletePayment = (id) => {
-    if (confirm('Bu ödeme kaydını silmek istediğinizden emin misiniz?')) {
-      setPayments(payments.filter(p => p.id !== id));
-    }
+  const handleDeletePayment = (payment) => {
+    setDeletePaymentModal({ show: true, paymentId: payment.id, invoiceNo: payment.invoiceNo });
+  };
+
+  const confirmDeletePayment = () => {
+    setPayments(payments.filter(p => p.id !== deletePaymentModal.paymentId));
+    setDeletePaymentModal({ show: false, paymentId: null, invoiceNo: '' });
   };
 
   const handleSave = () => {
@@ -220,7 +227,7 @@ const PaymentManagement = () => {
   };
 
   const handleDownloadInvoice = (payment) => {
-    alert(`${payment.invoiceNo} numaralı fatura indiriliyor...`);
+    setDownloadModal({ show: true, invoiceNo: payment.invoiceNo });
   };
 
   return (
@@ -401,7 +408,7 @@ const PaymentManagement = () => {
                       </button>
                       <button
                         className="p-2 hover:bg-red-50 rounded-lg transition-colors"
-                        onClick={() => handleDeletePayment(payment.id)}
+                        onClick={() => handleDeletePayment(payment)}
                         title="Sil"
                       >
                         <Trash2 size={18} className="text-red-600" />
@@ -524,6 +531,42 @@ const PaymentManagement = () => {
           </div>
         )}
       </Modal>
+
+      {/* Reminder Sent Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={reminderModal.show}
+        onClose={() => setReminderModal({ show: false, parentName: '' })}
+        onConfirm={() => setReminderModal({ show: false, parentName: '' })}
+        title="Hatırlatma Gönderildi"
+        message={`${reminderModal.parentName} velisine ödeme hatırlatma SMS/Email gönderildi.`}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
+
+      {/* Delete Payment Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deletePaymentModal.show}
+        onClose={() => setDeletePaymentModal({ show: false, paymentId: null, invoiceNo: '' })}
+        onConfirm={confirmDeletePayment}
+        title="Ödeme Kaydını Sil"
+        message={`${deletePaymentModal.invoiceNo} numaralı ödeme kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`}
+        type="danger"
+        confirmText="Evet, Sil"
+        cancelText="İptal"
+      />
+
+      {/* Download Invoice Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={downloadModal.show}
+        onClose={() => setDownloadModal({ show: false, invoiceNo: '' })}
+        onConfirm={() => setDownloadModal({ show: false, invoiceNo: '' })}
+        title="Fatura İndiriliyor"
+        message={`${downloadModal.invoiceNo} numaralı fatura indiriliyor...`}
+        type="info"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };

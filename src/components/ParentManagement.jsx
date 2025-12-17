@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const ParentManagement = () => {
   const [parents, setParents] = useState([
@@ -43,6 +44,8 @@ const ParentManagement = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedParent, setSelectedParent] = useState(null);
+  const [deleteModal, setDeleteModal] = useState({ show: false, parentId: null, parentName: '' });
+  const [messageModal, setMessageModal] = useState({ show: false, parentName: '' });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -104,10 +107,13 @@ const ParentManagement = () => {
     setShowModal(true);
   };
 
-  const handleDeleteParent = (id) => {
-    if (confirm('Bu veliyi silmek istediğinizden emin misiniz?')) {
-      setParents(parents.filter(p => p.id !== id));
-    }
+  const handleDeleteParent = (parent) => {
+    setDeleteModal({ show: true, parentId: parent.id, parentName: parent.name });
+  };
+
+  const confirmDelete = () => {
+    setParents(parents.filter(p => p.id !== deleteModal.parentId));
+    setDeleteModal({ show: false, parentId: null, parentName: '' });
   };
 
   const handleSave = () => {
@@ -129,7 +135,7 @@ const ParentManagement = () => {
   };
 
   const handleSendMessage = (parent) => {
-    alert(`${parent.name} ile mesajlaşma başlatılıyor...`);
+    setMessageModal({ show: true, parentName: parent.name });
   };
 
   const handleCall = (phone) => {
@@ -284,7 +290,7 @@ const ParentManagement = () => {
                   <Edit2 size={18} className="text-purple-600" />
                 </button>
                 <button
-                  onClick={() => handleDeleteParent(parent.id)}
+                  onClick={() => handleDeleteParent(parent)}
                   className="p-2 hover:bg-red-50 rounded-lg transition-colors"
                   title="Sil"
                 >
@@ -374,6 +380,30 @@ const ParentManagement = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Silme Onay Modal */}
+      <ConfirmationModal
+        isOpen={deleteModal.show}
+        onClose={() => setDeleteModal({ show: false, parentId: null, parentName: '' })}
+        onConfirm={confirmDelete}
+        title="Veliyi Sil"
+        message={`${deleteModal.parentName} adlı veliyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`}
+        type="danger"
+        confirmText="Evet, Sil"
+        cancelText="İptal"
+      />
+
+      {/* Mesaj Başlatma Bilgi Modal */}
+      <ConfirmationModal
+        isOpen={messageModal.show}
+        onClose={() => setMessageModal({ show: false, parentName: '' })}
+        onConfirm={() => setMessageModal({ show: false, parentName: '' })}
+        title="Mesajlaşma Başlatılıyor"
+        message={`${messageModal.parentName} ile mesajlaşma başlatılıyor. Mesajlaşma modülüne yönlendirileceksiniz.`}
+        type="info"
+        confirmText="Tamam"
+        cancelText=""
+      />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const StaffManagement = () => {
   const [staff, setStaff] = useState([
@@ -113,6 +114,8 @@ const StaffManagement = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
+  const [successModal, setSuccessModal] = useState({ show: false, message: '' });
+  const [errorModal, setErrorModal] = useState({ show: false, message: '' });
 
   const [staffFormData, setStaffFormData] = useState({
     firstName: '',
@@ -195,7 +198,7 @@ const StaffManagement = () => {
 
   const handleSaveStaff = () => {
     if (!staffFormData.firstName || !staffFormData.lastName || !staffFormData.role) {
-      alert('Lütfen zorunlu alanları doldurun');
+      setErrorModal({ show: true, message: 'Lütfen zorunlu alanları doldurun' });
       return;
     }
 
@@ -219,7 +222,7 @@ const StaffManagement = () => {
 
     setStaff([newStaff, ...staff]);
     setShowStaffModal(false);
-    alert('Personel kaydı oluşturuldu!');
+    setSuccessModal({ show: true, message: 'Personel kaydı oluşturuldu!' });
   };
 
   const handleNewLeaveRequest = () => {
@@ -236,7 +239,7 @@ const StaffManagement = () => {
   const handleSaveLeaveRequest = () => {
     const selectedStaff = staff.find(s => s.id === parseInt(leaveFormData.staffId));
     if (!selectedStaff) {
-      alert('Lütfen personel seçin');
+      setErrorModal({ show: true, message: 'Lütfen personel seçin' });
       return;
     }
 
@@ -259,7 +262,7 @@ const StaffManagement = () => {
 
     setLeaveRequests([newLeaveRequest, ...leaveRequests]);
     setShowLeaveModal(false);
-    alert('İzin talebi oluşturuldu!');
+    setSuccessModal({ show: true, message: 'İzin talebi oluşturuldu!' });
   };
 
   const handleApproveLeave = (requestId) => {
@@ -268,7 +271,7 @@ const StaffManagement = () => {
         ? { ...req, status: 'approved', approvedBy: 'Müdür', approvedAt: new Date().toISOString().split('T')[0] }
         : req
     ));
-    alert('İzin talebi onaylandı!');
+    setSuccessModal({ show: true, message: 'İzin talebi onaylandı!' });
   };
 
   const handleRejectLeave = (requestId) => {
@@ -277,7 +280,7 @@ const StaffManagement = () => {
         ? { ...req, status: 'rejected', rejectedBy: 'Müdür', rejectedAt: new Date().toISOString().split('T')[0] }
         : req
     ));
-    alert('İzin talebi reddedildi!');
+    setSuccessModal({ show: true, message: 'İzin talebi reddedildi!' });
   };
 
   const handleViewDetails = (person) => {
@@ -856,6 +859,30 @@ const StaffManagement = () => {
           </div>
         </Modal>
       )}
+
+      {/* Success Modal */}
+      <ConfirmationModal
+        isOpen={successModal.show}
+        onClose={() => setSuccessModal({ show: false, message: '' })}
+        onConfirm={() => setSuccessModal({ show: false, message: '' })}
+        title="Başarılı"
+        message={successModal.message}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
+
+      {/* Error Modal */}
+      <ConfirmationModal
+        isOpen={errorModal.show}
+        onClose={() => setErrorModal({ show: false, message: '' })}
+        onConfirm={() => setErrorModal({ show: false, message: '' })}
+        title="Uyarı"
+        message={errorModal.message}
+        type="warning"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };

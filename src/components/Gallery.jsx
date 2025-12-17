@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const Gallery = () => {
   const [albums, setAlbums] = useState([
@@ -69,6 +70,8 @@ const Gallery = () => {
     caption: '',
     files: []
   });
+  const [deleteAlbumModal, setDeleteAlbumModal] = useState({ show: false, albumId: null, albumTitle: '' });
+  const [uploadSuccessModal, setUploadSuccessModal] = useState({ show: false });
 
   const filteredAlbums = albums.filter(album => {
     const matchesSearch = album.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -143,14 +146,17 @@ const Gallery = () => {
     });
   };
 
-  const handleDeleteAlbum = (albumId) => {
-    if (confirm('Bu albümü silmek istediğinizden emin misiniz?')) {
-      setAlbums(albums.filter(a => a.id !== albumId));
-    }
+  const handleDeleteAlbum = (album) => {
+    setDeleteAlbumModal({ show: true, albumId: album.id, albumTitle: album.title });
+  };
+
+  const confirmDeleteAlbum = () => {
+    setAlbums(albums.filter(a => a.id !== deleteAlbumModal.albumId));
+    setDeleteAlbumModal({ show: false, albumId: null, albumTitle: '' });
   };
 
   const handleUpload = () => {
-    alert('Dosyalar yükleniyor... (Firebase Storage entegrasyonu yapılacak)');
+    setUploadSuccessModal({ show: true });
     setShowUploadModal(false);
   };
 
@@ -290,7 +296,7 @@ const Gallery = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteAlbum(album.id);
+                        handleDeleteAlbum(album);
                       }}
                       className="hover:text-red-600 transition-colors"
                       title="Sil"
@@ -465,6 +471,30 @@ const Gallery = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Delete Album Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deleteAlbumModal.show}
+        onClose={() => setDeleteAlbumModal({ show: false, albumId: null, albumTitle: '' })}
+        onConfirm={confirmDeleteAlbum}
+        title="Albümü Sil"
+        message={`"${deleteAlbumModal.albumTitle}" albümünü ve içindeki tüm fotoğrafları silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`}
+        type="danger"
+        confirmText="Evet, Sil"
+        cancelText="İptal"
+      />
+
+      {/* Upload Success Modal */}
+      <ConfirmationModal
+        isOpen={uploadSuccessModal.show}
+        onClose={() => setUploadSuccessModal({ show: false })}
+        onConfirm={() => setUploadSuccessModal({ show: false })}
+        title="Dosyalar Yükleniyor"
+        message="Dosyalar yükleniyor... (Firebase Storage entegrasyonu yapılacak)"
+        type="info"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };

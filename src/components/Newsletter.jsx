@@ -21,6 +21,7 @@ import { Card, StatCard } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const Newsletter = () => {
   const [showModal, setShowModal] = useState(false);
@@ -30,6 +31,8 @@ const Newsletter = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterType, setFilterType] = useState('all');
+  const [deleteModal, setDeleteModal] = useState({ show: false, itemId: null, itemName: '' });
+  const [successModal, setSuccessModal] = useState({ show: false, message: '' });
 
   // Mock data - Gerçek uygulamada API'den gelecek
   const [newsletters, setNewsletters] = useState([
@@ -168,10 +171,14 @@ const Newsletter = () => {
     setShowModal(true);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Bu bülteni silmek istediğinizden emin misiniz?')) {
-      setNewsletters(newsletters.filter(n => n.id !== id));
-    }
+  const handleDelete = (newsletter) => {
+    setDeleteModal({ show: true, itemId: newsletter.id, itemName: newsletter.title });
+  };
+
+  const confirmDelete = () => {
+    setNewsletters(newsletters.filter(n => n.id !== deleteModal.itemId));
+    setDeleteModal({ show: false, itemId: null, itemName: '' });
+    setSuccessModal({ show: true, message: 'Bülten başarıyla silindi!' });
   };
 
   const handlePreview = (newsletter) => {
@@ -195,6 +202,7 @@ const Newsletter = () => {
       }
     };
     setNewsletters([newNewsletter, ...newsletters]);
+    setSuccessModal({ show: true, message: 'Bülten kopyalandı!' });
   };
 
   const getStatusBadge = (status) => {
@@ -430,7 +438,7 @@ const Newsletter = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleDelete(newsletter.id)}
+                    onClick={() => handleDelete(newsletter)}
                     icon={Trash2}
                     className="text-red-600 hover:bg-red-50"
                   >
@@ -487,6 +495,30 @@ const Newsletter = () => {
           }}
         />
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deleteModal.show}
+        onClose={() => setDeleteModal({ show: false, itemId: null, itemName: '' })}
+        onConfirm={confirmDelete}
+        title="Bülteni Sil"
+        message={`"${deleteModal.itemName}" bültenini silmek istediğinizden emin misiniz?`}
+        type="danger"
+        confirmText="Evet, Sil"
+        cancelText="İptal"
+      />
+
+      {/* Success Modal */}
+      <ConfirmationModal
+        isOpen={successModal.show}
+        onClose={() => setSuccessModal({ show: false, message: '' })}
+        onConfirm={() => setSuccessModal({ show: false, message: '' })}
+        title="Başarılı"
+        message={successModal.message}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };
@@ -513,6 +545,7 @@ const NewsletterModal = ({ newsletter, templates, typeOptions, classOptions, onC
       hasAttachment: false
     }
   );
+  const [errorModal, setErrorModal] = useState({ show: false, message: '' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -547,7 +580,7 @@ const NewsletterModal = ({ newsletter, templates, typeOptions, classOptions, onC
     if (formData.scheduledDate) {
       setFormData({ ...formData, status: 'scheduled' });
     } else {
-      alert('Lütfen bir tarih seçin');
+      setErrorModal({ show: true, message: 'Lütfen bir tarih seçin' });
     }
   };
 
@@ -689,6 +722,18 @@ const NewsletterModal = ({ newsletter, templates, typeOptions, classOptions, onC
           </Button>
         </div>
       </form>
+
+      {/* Error Modal */}
+      <ConfirmationModal
+        isOpen={errorModal.show}
+        onClose={() => setErrorModal({ show: false, message: '' })}
+        onConfirm={() => setErrorModal({ show: false, message: '' })}
+        title="Uyarı"
+        message={errorModal.message}
+        type="warning"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </Modal>
   );
 };

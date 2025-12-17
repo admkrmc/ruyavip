@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const MedicineTracking = () => {
   const [medicines, setMedicines] = useState([
@@ -87,6 +88,8 @@ const MedicineTracking = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showLogModal, setShowLogModal] = useState(false);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const [successModal, setSuccessModal] = useState({ show: false, message: '' });
+  const [errorModal, setErrorModal] = useState({ show: false, message: '' });
   const [formData, setFormData] = useState({
     studentId: '',
     medicineName: '',
@@ -201,7 +204,7 @@ const MedicineTracking = () => {
   const handleSave = () => {
     const student = students.find(s => s.id === parseInt(formData.studentId));
     if (!student) {
-      alert('Lütfen bir öğrenci seçin');
+      setErrorModal({ show: true, message: 'Lütfen bir öğrenci seçin' });
       return;
     }
 
@@ -228,7 +231,7 @@ const MedicineTracking = () => {
 
     setMedicines([newMedicine, ...medicines]);
     setShowModal(false);
-    alert('İlaç kaydı oluşturuldu! Veli onayı bekleniyor.');
+    setSuccessModal({ show: true, message: 'İlaç kaydı oluşturuldu! Veli onayı bekleniyor.' });
   };
 
   const handleApprove = (medicineId) => {
@@ -237,7 +240,7 @@ const MedicineTracking = () => {
         ? { ...m, parentApproved: true, parentApprovedAt: new Date().toISOString() }
         : m
     ));
-    alert('İlaç kaydı onaylandı! SMS bildirimi gönderildi.');
+    setSuccessModal({ show: true, message: 'İlaç kaydı onaylandı! SMS bildirimi gönderildi.' });
   };
 
   const handleLogMedication = (medicine) => {
@@ -274,7 +277,7 @@ const MedicineTracking = () => {
     ));
 
     setShowLogModal(false);
-    alert(logFormData.given ? 'İlaç verildi olarak kaydedildi!' : 'İlaç verilmedi olarak kaydedildi.');
+    setSuccessModal({ show: true, message: logFormData.given ? 'İlaç verildi olarak kaydedildi!' : 'İlaç verilmedi olarak kaydedildi.' });
   };
 
   const handleViewDetails = (medicine) => {
@@ -857,6 +860,30 @@ const MedicineTracking = () => {
           </div>
         </Modal>
       )}
+
+      {/* Success Modal */}
+      <ConfirmationModal
+        isOpen={successModal.show}
+        onClose={() => setSuccessModal({ show: false, message: '' })}
+        onConfirm={() => setSuccessModal({ show: false, message: '' })}
+        title="Başarılı"
+        message={successModal.message}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
+
+      {/* Error Modal */}
+      <ConfirmationModal
+        isOpen={errorModal.show}
+        onClose={() => setErrorModal({ show: false, message: '' })}
+        onConfirm={() => setErrorModal({ show: false, message: '' })}
+        title="Uyarı"
+        message={errorModal.message}
+        type="warning"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };

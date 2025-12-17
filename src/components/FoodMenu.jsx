@@ -4,12 +4,14 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const FoodMenu = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
+  const [successModal, setSuccessModal] = useState({ show: false, message: '' });
   const [weeklyMenus, setWeeklyMenus] = useState([
     {
       week: '9-13 Aralık 2025',
@@ -234,7 +236,7 @@ const FoodMenu = () => {
   };
 
   const handleSave = () => {
-    alert('Menü kaydedildi! (Firebase entegrasyonu eklenecek)');
+    setSuccessModal({ show: true, message: 'Menü kaydedildi! (Firebase entegrasyonu eklenecek)' });
     setShowModal(false);
   };
 
@@ -680,6 +682,18 @@ const FoodMenu = () => {
           </div>
         </Modal>
       )}
+
+      {/* Success Modal */}
+      <ConfirmationModal
+        isOpen={successModal.show}
+        onClose={() => setSuccessModal({ show: false, message: '' })}
+        onConfirm={() => setSuccessModal({ show: false, message: '' })}
+        title="Başarılı"
+        message={successModal.message}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };

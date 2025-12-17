@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const DailyReports = () => {
   const [reports, setReports] = useState([
@@ -73,6 +74,7 @@ const DailyReports = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, type: 'info', title: '', message: '', onConfirm: null });
   const [formData, setFormData] = useState({
     studentId: '',
     date: new Date().toISOString().split('T')[0],
@@ -149,7 +151,14 @@ const DailyReports = () => {
   const handleSave = () => {
     const student = students.find(s => s.id === parseInt(formData.studentId));
     if (!student) {
-      alert('Lütfen bir öğrenci seçin');
+      setConfirmModal({
+        isOpen: true,
+        type: 'warning',
+        title: 'Uyarı',
+        message: 'Lütfen bir öğrenci seçin',
+        onConfirm: () => setConfirmModal({ ...confirmModal, isOpen: false }),
+        showCancel: false
+      });
       return;
     }
 
@@ -172,7 +181,14 @@ const DailyReports = () => {
 
     setReports([newReport, ...reports]);
     setShowModal(false);
-    alert('Günlük rapor oluşturuldu!');
+    setConfirmModal({
+      isOpen: true,
+      type: 'success',
+      title: 'Başarılı',
+      message: 'Günlük rapor oluşturuldu!',
+      onConfirm: () => setConfirmModal({ ...confirmModal, isOpen: false }),
+      showCancel: false
+    });
   };
 
   const handleSendToParent = (reportId) => {
@@ -181,7 +197,14 @@ const DailyReports = () => {
         ? { ...r, sentToParent: true, sentAt: new Date().toISOString() }
         : r
     ));
-    alert('Rapor veliye gönderildi!');
+    setConfirmModal({
+      isOpen: true,
+      type: 'success',
+      title: 'Başarılı',
+      message: 'Rapor veliye gönderildi!',
+      onConfirm: () => setConfirmModal({ ...confirmModal, isOpen: false }),
+      showCancel: false
+    });
   };
 
   const handleViewDetails = (report) => {
@@ -770,6 +793,17 @@ const DailyReports = () => {
           </div>
         </Modal>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal({ ...confirmModal, isOpen: false })}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        type={confirmModal.type}
+        showCancel={confirmModal.showCancel !== false}
+      />
     </div>
   );
 };

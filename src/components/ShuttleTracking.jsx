@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const ShuttleTracking = () => {
   const [routes, setRoutes] = useState([
@@ -116,6 +117,8 @@ const ShuttleTracking = () => {
   const [showLogModal, setShowLogModal] = useState(false);
   const [showMapModal, setShowMapModal] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [successModal, setSuccessModal] = useState({ show: false, message: '' });
+  const [errorModal, setErrorModal] = useState({ show: false, message: '' });
   const [routeFormData, setRouteFormData] = useState({
     name: '',
     driverName: '',
@@ -172,7 +175,7 @@ const ShuttleTracking = () => {
 
   const handleSaveRoute = () => {
     if (!routeFormData.name || !routeFormData.driverName) {
-      alert('Lütfen rota adı ve şoför adı girin');
+      setErrorModal({ show: true, message: 'Lütfen rota adı ve şoför adı girin' });
       return;
     }
 
@@ -211,7 +214,7 @@ const ShuttleTracking = () => {
 
     setRoutes([newRoute, ...routes]);
     setShowRouteModal(false);
-    alert('Servis rotası oluşturuldu!');
+    setSuccessModal({ show: true, message: 'Servis rotası oluşturuldu!' });
   };
 
   const handleLogBoarding = (route) => {
@@ -229,7 +232,7 @@ const ShuttleTracking = () => {
   const handleSaveLog = () => {
     const student = students.find(s => s.id === parseInt(logFormData.studentId));
     if (!student) {
-      alert('Lütfen bir öğrenci seçin');
+      setErrorModal({ show: true, message: 'Lütfen bir öğrenci seçin' });
       return;
     }
 
@@ -248,7 +251,7 @@ const ShuttleTracking = () => {
 
     setLogs([newLog, ...logs]);
     setShowLogModal(false);
-    alert(`Öğrenci ${logFormData.type === 'boarding' ? 'biniş' : 'iniş'} kaydı yapıldı!`);
+    setSuccessModal({ show: true, message: `Öğrenci ${logFormData.type === 'boarding' ? 'biniş' : 'iniş'} kaydı yapıldı!` });
   };
 
   const handleViewDetails = (route) => {
@@ -824,6 +827,30 @@ const ShuttleTracking = () => {
           </div>
         </Modal>
       )}
+
+      {/* Success Modal */}
+      <ConfirmationModal
+        isOpen={successModal.show}
+        onClose={() => setSuccessModal({ show: false, message: '' })}
+        onConfirm={() => setSuccessModal({ show: false, message: '' })}
+        title="Başarılı"
+        message={successModal.message}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
+
+      {/* Error Modal */}
+      <ConfirmationModal
+        isOpen={errorModal.show}
+        onClose={() => setErrorModal({ show: false, message: '' })}
+        onConfirm={() => setErrorModal({ show: false, message: '' })}
+        title="Uyarı"
+        message={errorModal.message}
+        type="warning"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };

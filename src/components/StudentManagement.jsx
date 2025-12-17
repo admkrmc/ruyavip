@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const StudentManagement = () => {
   const [students, setStudents] = useState([
@@ -44,6 +45,7 @@ const StudentManagement = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [deleteModal, setDeleteModal] = useState({ show: false, studentId: null, studentName: '' });
   const [formData, setFormData] = useState({
     name: '',
     className: '',
@@ -103,10 +105,17 @@ const StudentManagement = () => {
     setShowModal(true);
   };
 
-  const handleDeleteStudent = (id) => {
-    if (confirm('Bu öğrenciyi silmek istediğinizden emin misiniz?')) {
-      setStudents(students.filter(s => s.id !== id));
-    }
+  const handleDeleteStudent = (student) => {
+    setDeleteModal({
+      show: true,
+      studentId: student.id,
+      studentName: student.name
+    });
+  };
+
+  const confirmDelete = () => {
+    setStudents(students.filter(s => s.id !== deleteModal.studentId));
+    setDeleteModal({ show: false, studentId: null, studentName: '' });
   };
 
   const handleSave = () => {
@@ -258,7 +267,7 @@ const StudentManagement = () => {
                       </button>
                       <button
                         className="p-2 hover:bg-red-50 rounded-lg transition-colors"
-                        onClick={() => handleDeleteStudent(student.id)}
+                        onClick={() => handleDeleteStudent(student)}
                         title="Sil"
                       >
                         <Trash2 size={18} className="text-red-600" />
@@ -349,6 +358,18 @@ const StudentManagement = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deleteModal.show}
+        onClose={() => setDeleteModal({ show: false, studentId: null, studentName: '' })}
+        onConfirm={confirmDelete}
+        title="Öğrenciyi Sil"
+        message={`${deleteModal.studentName} adlı öğrenciyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`}
+        type="danger"
+        confirmText="Evet, Sil"
+        cancelText="İptal"
+      />
     </div>
   );
 };

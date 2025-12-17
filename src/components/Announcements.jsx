@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const AnnouncementsEnhanced = () => {
   const [announcements, setAnnouncements] = useState([
@@ -86,6 +87,7 @@ const AnnouncementsEnhanced = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [confirmModal, setConfirmModal] = useState({ isOpen: false, type: 'info', title: '', message: '', onConfirm: null });
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -196,9 +198,16 @@ const AnnouncementsEnhanced = () => {
     };
     setAnnouncements([newAnnouncement, ...announcements]);
     setShowModal(false);
-    alert(formData.publishNow
-      ? 'Duyuru yayınlandı ve hedef kitleye bildirim gönderildi!'
-      : 'Duyuru taslak olarak kaydedildi.');
+    setConfirmModal({
+      isOpen: true,
+      type: 'success',
+      title: 'Başarılı',
+      message: formData.publishNow
+        ? 'Duyuru yayınlandı ve hedef kitleye bildirim gönderildi!'
+        : 'Duyuru taslak olarak kaydedildi.',
+      onConfirm: () => setConfirmModal({ ...confirmModal, isOpen: false }),
+      showCancel: false
+    });
   };
 
   const handleViewDetails = (announcement) => {
@@ -207,16 +216,30 @@ const AnnouncementsEnhanced = () => {
   };
 
   const handleDelete = (id) => {
-    if (confirm('Bu duyuruyu silmek istediğinizden emin misiniz?')) {
-      setAnnouncements(announcements.filter(a => a.id !== id));
-    }
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Duyuruyu Sil',
+      message: 'Bu duyuruyu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+      onConfirm: () => {
+        setAnnouncements(announcements.filter(a => a.id !== id));
+        setConfirmModal({ ...confirmModal, isOpen: false });
+      }
+    });
   };
 
   const handlePublish = (id) => {
     setAnnouncements(announcements.map(a =>
       a.id === id ? { ...a, status: 'published', publishDate: new Date().toISOString() } : a
     ));
-    alert('Duyuru yayınlandı ve bildirimler gönderildi!');
+    setConfirmModal({
+      isOpen: true,
+      type: 'success',
+      title: 'Başarılı',
+      message: 'Duyuru yayınlandı ve bildirimler gönderildi!',
+      onConfirm: () => setConfirmModal({ ...confirmModal, isOpen: false }),
+      showCancel: false
+    });
   };
 
   return (
@@ -587,6 +610,17 @@ const AnnouncementsEnhanced = () => {
           </div>
         </Modal>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal({ ...confirmModal, isOpen: false })}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        type={confirmModal.type}
+        showCancel={confirmModal.showCancel !== false}
+      />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { Card } from './ui/Card';
 import { Button } from './ui/Button';
 import { Input, Select, TextArea } from './ui/Input';
 import { Modal } from './ui/Modal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 const ApprovalSystem = () => {
   const [approvalRequests, setApprovalRequests] = useState([
@@ -80,6 +81,8 @@ const ApprovalSystem = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [successModal, setSuccessModal] = useState({ show: false, message: '' });
+  const [rejectModal, setRejectModal] = useState({ show: false, requestId: null });
   const [formData, setFormData] = useState({
     studentName: '',
     parentName: '',
@@ -172,26 +175,28 @@ const ApprovalSystem = () => {
       }
       return request;
     }));
-    alert('İzin talebi onaylandı. Veli bilgilendirildi.');
+    setSuccessModal({ show: true, message: 'İzin talebi onaylandı. Veli bilgilendirildi.' });
   };
 
   const handleReject = (requestId) => {
-    const reason = prompt('Ret sebebi:');
-    if (reason) {
-      setApprovalRequests(approvalRequests.map(request => {
-        if (request.id === requestId) {
-          return {
-            ...request,
-            status: 'rejected',
-            approvedBy: 'Müdür',
-            approvedAt: new Date().toISOString(),
-            rejectionReason: reason
-          };
-        }
-        return request;
-      }));
-      alert('İzin talebi reddedildi. Veli bilgilendirildi.');
-    }
+    setRejectModal({ show: true, requestId });
+  };
+
+  const confirmReject = (reason) => {
+    setApprovalRequests(approvalRequests.map(request => {
+      if (request.id === rejectModal.requestId) {
+        return {
+          ...request,
+          status: 'rejected',
+          approvedBy: 'Müdür',
+          approvedAt: new Date().toISOString(),
+          rejectionReason: reason
+        };
+      }
+      return request;
+    }));
+    setRejectModal({ show: false, requestId: null });
+    setSuccessModal({ show: true, message: 'İzin talebi reddedildi. Veli bilgilendirildi.' });
   };
 
   const handleViewDetails = (request) => {
@@ -225,7 +230,7 @@ const ApprovalSystem = () => {
     };
     setApprovalRequests([newRequest, ...approvalRequests]);
     setShowModal(false);
-    alert('İzin talebi oluşturuldu.');
+    setSuccessModal({ show: true, message: 'İzin talebi oluşturuldu.' });
   };
 
   return (
@@ -594,6 +599,55 @@ const ApprovalSystem = () => {
           </div>
         </Modal>
       )}
+
+      {/* Reject Modal with Reason Input */}
+      {rejectModal.show && (
+        <Modal
+          isOpen={rejectModal.show}
+          onClose={() => setRejectModal({ show: false, requestId: null })}
+          title="İzin Talebini Reddet"
+          size="md"
+        >
+          <div className="space-y-4">
+            <p className="text-gray-700">Lütfen ret sebebini belirtin:</p>
+            <TextArea
+              label="Ret Sebebi"
+              id="rejection-reason"
+              placeholder="Örn: Lütfen doktor raporu ekleyiniz"
+              rows={3}
+              required
+            />
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button variant="outline" onClick={() => setRejectModal({ show: false, requestId: null })}>
+                İptal
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  const reason = document.getElementById('rejection-reason').value;
+                  if (reason) {
+                    confirmReject(reason);
+                  }
+                }}
+              >
+                Reddet
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* Success Modal */}
+      <ConfirmationModal
+        isOpen={successModal.show}
+        onClose={() => setSuccessModal({ show: false, message: '' })}
+        onConfirm={() => setSuccessModal({ show: false, message: '' })}
+        title="Başarılı"
+        message={successModal.message}
+        type="success"
+        confirmText="Tamam"
+        showCancel={false}
+      />
     </div>
   );
 };
